@@ -9,7 +9,7 @@ print("Si la lettre est dans le mot, elle sera affichée.")
 #affichage du message
 print("Si la lettre n'est pas dans le mot, vous perdez un essai.")
 #affichage du message
-print("Si vous perdez 8 essais, vous avez perdu.")
+print("Si vous utilisez tous vos essais... vous avez perdu.")
 #affichage du message
 print("Bonne chance !")
 
@@ -25,8 +25,8 @@ mot_devine = "-" * len(mot)         # crée un mot de même longueur avec des "-
 print(mot_devine)                   # affiche le mot à deviner
 
 #choix du niveau de difficulté
-def niveau():
-    niveau = input("Choisissez un niveau de difficulté : Facile, Moyen ou Difficile :")
+def niv():
+    niveau = input("Choisissez un niveau de difficulté : facile, moyen ou difficile :")
     while niveau != "facile" and niveau != "moyen" and niveau != "difficile":
         print("Vous devez choisir un niveau de difficulté.")
         niveau = input("Choisissez un niveau de difficulté :")
@@ -36,7 +36,7 @@ def niveau():
         essais = 6
     else:
         essais = 4
-    return essais
+    return essais, niveau
 
 #vérification de la saisie de l'utilisateur
 def saisie_utilisateur():
@@ -54,32 +54,109 @@ def affichage_essais(essais):
         print("Il vous reste", essais, "essais.")
 
 #boucle principale
-essais = niveau()
+essais, niveau = niv()
 affichage_essais(essais)
 liste=[]
-while essais > 0:
-    lettre = saisie_utilisateur()
-    liste.append(lettre) #ajout de la lettre saisie dans la liste
-    if lettre in mot:
-        print("La lettre", lettre, "est dans le mot.")
-        for i in range(len(mot)):
-            if mot[i] == lettre:
-                mot_devine = mot_devine[:i] + lettre + mot_devine[i+1:]
-        print(mot_devine)
-    else:
-        print("La lettre", lettre, "n'est pas dans le mot.")
-        essais -= 1
-        affichage_essais(essais)
-        print(liste) #affichage de la liste des lettres saisies
-    if mot == mot_devine:
-        print("Bravo, vous avez gagné !")
-        break
+if niveau!="difficile":
+    #boucle jeu
+    while essais > 0:
+        lettre = saisie_utilisateur()
+        liste.append(lettre) #ajout de la lettre saisie dans la liste
 
+        if lettre in mot:
+            print("La lettre", lettre, "est dans le mot.")
+            for i in range(len(mot)):
+                if mot[i] == lettre:
+                    mot_devine = mot_devine[:i] + lettre + mot_devine[i+1:]
+            
+        else:
+            print("La lettre", lettre, "n'est pas dans le mot.")
+            essais -= 1
+        affichage_essais(essais)
+        print(liste)
+        print(mot_devine)
+
+        #boucle victoire
+        if mot == mot_devine:
+            print("Bravo, vous avez gagné !")
+            break
+else :
+    while essais > 0:
+        lettre = saisie_utilisateur()
+        liste.append(lettre) #ajout de la lettre saisie dans la liste
+        if lettre in mot:
+            print("La lettre", lettre, "est dans le mot.")
+            for i in range(len(mot)):
+                if mot[i] == lettre:
+                    mot_devine = mot_devine[:i] + lettre + mot_devine[i+1:]
+            
+        else:
+            print("La lettre", lettre, "n'est pas dans le mot.")
+            essais -= 1
+        affichage_essais(essais)
+        print(mot_devine)
+        if mot == mot_devine:
+            print("Bravo, vous avez gagné !")
+            break
 
 
 if essais == 0:
     print("Vous avez perdu.")
     print("Le mot était", mot)
+    #rejouer
+    rejouer = input("Voulez-vous rejouer ? (o/n)")
+    while rejouer != "o" and rejouer != "n":
+        print("Vous devez répondre par o ou n.")
+    
+    if rejouer == "o":
+        #boucle principale
+        essais, niveau = niv()
+        affichage_essais(essais)
+        liste=[]
+        if niveau!="difficile":
+            #boucle jeu
+            while essais > 0:
+                lettre = saisie_utilisateur()
+                liste.append(lettre) #ajout de la lettre saisie dans la liste
+
+                if lettre in mot:
+                    print("La lettre", lettre, "est dans le mot.")
+                    for i in range(len(mot)):
+                        if mot[i] == lettre:
+                            mot_devine = mot_devine[:i] + lettre + mot_devine[i+1:]
+                    
+                else:
+                    print("La lettre", lettre, "n'est pas dans le mot.")
+                    essais -= 1
+                affichage_essais(essais)
+                print(liste)
+                print(mot_devine)
+
+                #boucle victoire
+                if mot == mot_devine:
+                    print("Bravo, vous avez gagné !")
+                    break
+        else :
+            while essais > 0:
+                lettre = saisie_utilisateur()
+                liste.append(lettre) #ajout de la lettre saisie dans la liste
+                if lettre in mot:
+                    print("La lettre", lettre, "est dans le mot.")
+                    for i in range(len(mot)):
+                        if mot[i] == lettre:
+                            mot_devine = mot_devine[:i] + lettre + mot_devine[i+1:]
+                    
+                else:
+                    print("La lettre", lettre, "n'est pas dans le mot.")
+                    essais -= 1
+                affichage_essais(essais)
+                print(mot_devine)
+                if mot == mot_devine:
+                    print("Bravo, vous avez gagné !")
+                    break
+    else:
+        print("Merci d'avoir joué au jeu du pendu !")
+
 
 #affichage du message de fin
 print("Merci d'avoir joué au jeu du pendu !")
